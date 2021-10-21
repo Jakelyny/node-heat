@@ -10,7 +10,14 @@ import axios from "axios";
  */
 
 interface IAccessTokenResponse {
-  access_token: string
+  access_token: string;
+}
+
+interface IUserResponse {
+  avatar_url: string,
+  login: string,
+  id: number,
+  name: string
 }
 
 class AuthenticateUserService {
@@ -28,11 +35,15 @@ class AuthenticateUserService {
       },
     });
 
-    const response = await axios.get("https://api.github.com/user", {
-      headers: {
-        authorization: `Bearer ${accessTokenResponse.access_token}`
+    const response = await axios.get<IUserResponse>("https://api.github.com/user",
+      {
+        headers: {
+          authorization: `Bearer ${accessTokenResponse.access_token}`
+        },
       }
-    })
+    );
+
+    const { login, id, avatar_url, name } = response.data
 
     return response.data;
 
@@ -40,4 +51,4 @@ class AuthenticateUserService {
 }
 
 
-export { AuthenticateUserService }
+export { AuthenticateUserService };
