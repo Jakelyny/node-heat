@@ -1,7 +1,8 @@
 import axios from "axios";
 /**
- *  Receber code(string)
+ * Receber code(string)
  * Recuperar o access_token no github
+ * Recuperar infos do user no github
  * Verificar se o usuário existe no BD
  * --- SIM = Gera um token
  * --- NÃO = Cria no BD e gera um token
@@ -26,6 +27,12 @@ class AuthenticateUserService {
         "Accept": "application/json"
       },
     });
+
+    const response = await axios.get("https://api.github.com/user", {
+      headers: {
+        authorization: `Bearer ${accessTokenResponse.access_token}`
+      }
+    })
 
     return response.data;
 
